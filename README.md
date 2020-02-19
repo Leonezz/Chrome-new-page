@@ -16,6 +16,14 @@ one boring afternoon,I happened to see a blog about making a chrome extension.So
 
 [Vue.js](https://cn.vuejs.org/index.html)
 
+## References
+
+The background image comes from a [bing image api](https://jsonp.afeld.me/?url=http%3A%2F%2Fcn.bing.com%2FHPImageArchive.aspx%3Fformat%3Djs%26idx%3D0%26n%3D1')
+
+The motto shown on the center is from [一言API](https://hitokoto.cn/api)
+
+The weather data comes from [和风天气API](https://www.heweather.com/)
+
 ## Install
 
 Install the release at [chrome store](https://chrome.google.com/webstore/detail/ojbfibegohbeidgdiobdifckaejcdceb/publish-accepted?authuser=0&hl=zh-CN)
