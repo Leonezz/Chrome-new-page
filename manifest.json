@@ -6,6 +6,11 @@
     "chrome_url_overrides": {
         "newtab": "newTab.html"
     },
+    "author":"zhuwenq",
+    "browser_action":{
+        "default_icon":"icon/main-icon.png",
+        "default_title":"Have a good day!"
+    },
     "permissions":[
         "storage"
     ],

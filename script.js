@@ -213,7 +213,7 @@ document.onkeydown = function (e) {
             let url = "";
             if (searchInput.value.substring(0, 6) == "#trans") {//google translate
                 var toTransLate = searchInput.value.substr(6);
-                if (toTransLate.charCodeAt(0) > 255) {
+                if (toTransLate.charCodeAt(1) > 255) {
                     sl = "zh-CN";
                     tl = "en";
                 }
