@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        new tab page
+    </title>
+    <script src="vue.js" type="text/javascript" charset="utf-8"></script>
+    <link href="stylesheet.css" rel="stylesheet" style="text/css" />
+</head>
+
+<body class="backGround">
+    <div id="app" class="backGround" class="div-relative">
+        <div id="vm" class="backGround" v-bind:style="{background: 'url(' + 'https://cn.bing.com' + imageUrl + ')'}"
+            class="div-relative">
+            <div id="hello-div" class="hello">
+                {{helloMsg}}
+            </div>
+            <div id="search-container" class="search-div">
+                <input id="search-input" name="serInput" class="search-input" autocomplete="off" tabindex="-1"
+                    type="url" placeholder="What do you want to know?" aria-hidden="true">
+            </div>
+            <div id="weather-container" class="weather-div">
+                <div id="firstRow" class="first-row">
+                    <div id="weatherIcon" class="weather-icon"
+                        v-bind:style="{background: 'url('+weatherIconUrl+') no-repeat 0px center'}"></div>
+                    <div id="tempText" class="temp-text">{{temp}}<font size="63px">&#8451</font>
+                    </div>
+                </div>
+                <div id="secondRow" class="second-row">
+                    <div id="weather-text" class="weather-text">{{weatherText}}</div>
+                    <div id="location-icon" class="location-div"></div>
+                </div>
+            </div>
+            <div id="imgCopyrightDiv" class="copyright-div">
+                <a v-bind:href="picCopyRightLink" class="copyright-text">{{picCopyRight}}</a>
+            </div>
+        </div>
+    </div>
+    <script src="script.js" type="text/javascript" charset="utf-8"></script>
+</body>
+
+</html>

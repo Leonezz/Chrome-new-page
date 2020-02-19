@@ -1,0 +1,167 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    z-index: 1;
+    height: 100%;
+}
+
+.div-relative {
+    position: relative;
+}
+
+.backGround {
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+}
+
+.search-div {
+    font-family: Arial Microsoft YaHei Ui;
+    font-size: medium;
+    z-index: 705;
+    position: absolute;
+    min-height: 44px;
+    width: 70%;
+    top: 0px;
+    left: 50%;
+    transform: translate(-50%, 300px);
+    background: url("icon/search.png") no-repeat 3px center;
+    opacity: 100;
+    transition-property: opacity;
+    transition-duration: 500ms;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0s;
+}
+
+.search-div-fade-in {
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.search-input {
+    margin: 0;
+    padding-left: 45px;
+    width: 100%;
+    height: 44px;
+    color: aliceblue;
+    background: rgba(0, 0, 0, 0);
+    border: 0;
+    font-size: 24px;
+    outline-style: none;
+    border-radius: 5px;
+}
+
+input::placeholder {
+    color: rgba(0, 0, 0, 0);
+}
+
+input:focus::placeholder {
+    color: rgba(240, 248, 255, 0.5);
+    user-select: none;
+}
+
+input:focus {
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .1), 0 0 8px rgba(102, 175, 233, .6)
+}
+
+.hello {
+    top: 20%;
+    font-size: 50px;
+    font-family: 'Microsoft YaHei';
+    text-align: center;
+    color: rgba(245, 245, 220, 0.8);
+    z-index: 100;
+    position: relative;
+    transition-duration: 500ms;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0ms;
+    user-select: none;
+}
+
+.hello-div-top {
+    top: 20%;
+    font-size: 50px;
+}
+
+.hello-div-center {
+    padding-left: 15%;
+    padding-right: 15%;
+
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 62px;
+}
+
+.weather-div {
+    z-index: 705;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    bottom: 0px;
+    right: 20px;
+}
+
+.first-row {
+    display: flex;
+}
+
+.second-row {
+    height: 35px;
+}
+
+.weather-text {
+    font-family: 'Microsoft YaHei';
+    font-size: medium;
+    color: aliceblue;
+    padding: 0 0;
+    text-align: right;
+    vertical-align: auto;
+    float: right;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.location-div {
+    bottom: 0;
+    height: 32px;
+    width: 32px;
+    background: url("icon/location.png") no-repeat center;
+    float: right;
+    margin-left: auto;
+}
+
+.weather-icon {
+    flex: none;
+    height: 100px;
+    width: 100px;
+    bottom: 0;
+}
+
+.temp-text {
+    padding: 0;
+    vertical-align: auto;
+    flex: 1;
+    font-family: 'Microsoft YaHei';
+    font-size: 64px;
+    color: aliceblue;
+}
+
+.copyright-div {
+    z-index: 705;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    bottom: 10px;
+    left: 20px;
+}
+
+.copyright-text {
+    font-family: consolas;
+    color: rgba(240, 248, 255, 0.45);
+}
