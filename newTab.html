@@ -14,11 +14,14 @@
     <div id="app" class="backGround" class="div-relative">
         <div id="vm" class="backGround" v-bind:style="{background: 'url(' + 'https://cn.bing.com' + imageUrl + ')'}"
             class="div-relative">
+            <div id="setting-btn-div">
+                <button id="setting-btn" class="setting-btn" v-on:click="createSettingDiv"></button>
+            </div>
             <div id="hello-div" class="hello">
-                {{helloMsg}}
+                {{helloMsg}}<font v-if="showname">{{name}}</font>
             </div>
             <div id="search-container" class="search-div">
-                <input id="search-input" name="serInput" class="search-input" autocomplete="off" tabindex="-1"
+                <input id="search-input" name="ser-input" class="search-input" autocomplete="off" tabindex="-1"
                     type="url" placeholder="What do you want to know?" aria-hidden="true">
             </div>
             <div id="weather-container" class="weather-div">
