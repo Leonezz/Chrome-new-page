@@ -23,9 +23,9 @@ function setSearchVisible() {
     document.getElementById("search-container").className = "search-div";
     document.getElementById("hello-div").className = "hello hello-div-top";
     document.getElementById("search-input").focus();
+    updateGreetMsg();//if very late stop show user name in greet words.
     app.$data.helloMsg = greetMsg;
     isSearchVisible = true;
-    app.$data.showname = true;
 }
 var daylyMottoAPI = 'https://v1.hitokoto.cn/';
 var bingImageAPI = 'https://jsonp.afeld.me/?url=http%3A%2F%2Fcn.bing.com%2FHPImageArchive.aspx%3Fformat%3Djs%26idx%3D0%26n%3D1';
@@ -102,7 +102,7 @@ var app = new Vue({
 function saveSettings() {
     chrome.storage.sync.set({ 'name': app.$data.name, 'weatherAPI': heWeatherAPI },
         function () {
-            console.log(heWeatherAPI);
+            //console.log(heWeatherAPI);
         });
 }
 
@@ -156,7 +156,13 @@ function heWeatherRequestSuccessHandler(response) {
             + json.HeWeather6[0].now.wind_sc
             + "级";
         app.$data.temp = json.HeWeather6[0].now.tmp;
-        app.$data.weatherIconUrl = "icon/" + json.HeWeather6[0].now.cond_code + ".png";
+        let date = new Date();
+        let hour = date.getHours();
+        let night = "";
+        if (!(hour > 4 && hour < 19)) {
+            night = "n";
+        }
+        app.$data.weatherIconUrl = "icon/svg/" + json.HeWeather6[0].now.cond_code + night + ".svg";
     });
 }
 
@@ -171,20 +177,20 @@ function updateGreetMsg() {
     let date = new Date();
     let hour = date.getHours();
     if (hour > 4 && hour < 12) {//morning
-        greetMsg = "Good morning!";
         app.$data.showname = true;
+        greetMsg = "Good morning!";
     }
     else if (hour > 11 && hour < 19) {//afternoon
-        greetMsg = "Good afternoon!";
         app.$data.showname = true;
+        greetMsg = "Good afternoon!";
     }
     else if (hour > 18 && hour < 24) {//evening
-        greetMsg = "Good evening!";
         app.$data.showname = true;
+        greetMsg = "Good evening!";
     }
     else {//very late
-        greetMsg = "What a busy day!";
         app.$data.showname = false;
+        greetMsg = "What a busy day!";
     }
 }
 
