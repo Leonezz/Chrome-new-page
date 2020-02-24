@@ -25,9 +25,9 @@
                     type="url" placeholder="What do you want to know?" aria-hidden="true">
             </div>
             <div id="bookmark-container" class="bookmark-container-div">
-                <button id="new-bookmark-btn" class="bookmark-div" v-on:click="createAddBookmarkDiv">
+                <div v-if="!isbookmarkfull" id="new-bookmark-btn" class="bookmark-div" v-on:click="createAddBookmarkDiv">
                     <div id="bookmark-btn-content" class="bookmark-div-content-btn"></div>
-                </button>
+                </div>
             </div>
             <div id="weather-container" class="weather-div">
                 <div id="firstRow" class="first-row">

@@ -1,3 +1,9 @@
+/**
+ * Author : zhuwenq
+ * Descripsion : this code is bullshit now.
+ */
+
+
 //https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1
 //https://bing.biturl.top/?resolution=1920&format=json&index=0&mkt=zh-CN
 var greetMsg = "";
@@ -10,22 +16,109 @@ var isSearchVisible = true;
  */
 var bookmarkObjs = [];
 
-function addBookmark(title, url) {
+function addBookmarkToArray(title, url, imageUrl) {
     var bk = {
         "id": "bookmark-" + url,//id should be unique
         "title": title,
-        "url": url
+        "url": url,
+        "imageUrl": imageUrl
     }
     bookmarkObjs.push(bk);
     saveBookmarks();
 }
 
-function delBookmark(_id) {
+function delBookmarkFromArray(_id) {
     bookmarkObjs.splice(bookmarkObjs.findIndex(item => item.id === _id), 1);
+    saveBookmarks();
+    //the bookmark container must not be full
+    app.$data.isbookmarkfull = false;
+}
+
+function findBookmarkInArray(_id) {
+    for (var i = 0; i < bookmarkObjs.length; ++i) {
+        if (bookmarkObjs[i].id == _id) {
+            return bookmarkObjs[i];
+        }
+    }
+}
+
+function changeBookmarkInArray(objOld, objNew) {
+    for (var i = 0; i < bookmarkObjs.length; ++i) {
+        if (objOld.id == bookmarkObjs[i].id) {
+            bookmarkObjs[i] = objNew;
+        }
+    }
     saveBookmarks();
 }
 
-function createBookMark(title, url) {
+function changeBookmarkDom(oldId, newBookmark) {
+    //document.getElementById(oldId).removeChild();
+    document.getElementById(oldId).removeChild(document.getElementById(oldId + "-a"));
+    var newId = newBookmark.id;
+    var newUrl = newBookmark.url;
+    var newTitle = newBookmark.title;
+    document.getElementById(oldId).id = newId;
+    //createEle(newId + "-btn", "bookmark-action-btn", newId, "button");
+    document.getElementById(oldId + "-btn").id = newId + "-btn";
+    document.getElementById(oldId + "-btn-div").id = newId + "-btn-div";
+    //createEle(newId + "-btn-div", "bookmark-action-icon-div", newId + "-btn", "div");
+    createEle(newId + "-a", null, newId, "a");
+    createEle(newId + "-a-div", "bookmark-main-div", newId + "-a", "div");
+    createEle(newId + "-a-div-div-1", "bookmark-icon", newId + "-a-div", "div");
+    createEle(newId + "-a-div-div-2", "bookmark-title", newId + "-a-div", "div");
+
+    document.getElementById(newId + "-a").href = newUrl;
+    document.getElementById(newId + "-a-div-div-2").innerHTML = newTitle;
+
+    document.getElementById(newId + "-a-div-div-1").style.background
+        = "url(\"" + newBookmark.imageUrl + "\")";
+}
+
+/**
+ * @param {*} url 
+ */
+function getIconUrlFromStdUrl(url) {
+    var domain = url.split("/")[2];
+    if (domain) {
+        domain = url.split("/")[0] + domain;
+    }
+    else {
+        domain = "";
+    }
+    return domain + "/favicon.ico";
+}
+
+
+String.prototype.gblen = function () {
+    var len = 0;
+    for (var i = 0; i < this.length; i++) {
+        var c = this.charCodeAt(i);
+        if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
+            len++;
+        } else {
+            len += 2;
+        }
+    }
+    return len;
+}
+
+String.prototype.leftCodes = function (num) {
+    var len = 0;
+    for (var i = 0; i < this.length; i++) {
+        var c = this.charCodeAt(i);
+        if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
+            len++;
+        } else {
+            len += 2;
+        }
+        if (len == num || len == num - 1) {
+            return this.slice(0, i);
+        }
+    }
+    return this;
+}
+
+function createBookMark(title, url, imgUrl) {
     var bkId = "bookmark-" + url;
     createEle(bkId, "bookmark-div", "bookmark-container", "div");
     createEle(bkId + "-btn", "bookmark-action-btn", bkId, "button");
@@ -35,15 +128,78 @@ function createBookMark(title, url) {
     createEle(bkId + "-a-div-div-1", "bookmark-icon", bkId + "-a-div", "div");
     createEle(bkId + "-a-div-div-2", "bookmark-title", bkId + "-a-div", "div");
     document.getElementById(bkId + "-a").href = url;
-    document.getElementById(bkId + "-a-div-div-2").innerHTML = title;
-    var domain = url.split("/")[2];
-    if (domain) {
-        domain = url.split("/")[0] + domain;
-    }
-    else {
-        domain = "";
-    }
-    document.getElementById(bkId + "-a-div-div-1").style.background = "url(" + domain + "/favicon.ico) no-repeat 0px center";
+    document.getElementById(bkId + "-a-div-div-2").innerHTML
+        = title.gblen() > 11 ? title.leftCodes(12) + "..." : title;
+
+    imgUrl = recongnizeIconUrl(imgUrl, url);
+
+    document.getElementById(bkId + "-a-div-div-1").style.background
+        = "url(\"" + imgUrl + "\")";
+
+
+    document.getElementById(bkId + "-btn").addEventListener("click", function (event) {
+        setTimeout(() => {
+            fn();
+        }, 10);
+
+        function fn() {
+            createEle("bkmenu-dialog", "dialog-div", "vm", "div");
+            createEle("change", null, "bkmenu-dialog", "button");
+            createEle(null, null, "bkmenu-dialog", "br");
+            var changeBtn = document.getElementById("change");
+            changeBtn.innerHTML = 'change';
+
+            var dialogEle = document.getElementById("bkmenu-dialog");
+
+            //var btn = document.getElementById(bkId + "-btn");
+            var topoffset = -dialogEle.offsetHeight - 20;
+            var leftoffset = -document.getElementById("bookmark-container").offsetLeft
+                + event.target.parentNode.offsetWidth / 1.8;
+
+            fixDialogPosition(event.target, "bkmenu-dialog", topoffset, leftoffset);
+            dialogEle.style.padding = "5px";
+
+            changeBtn.addEventListener("click", function () {
+                var bkToChange = findBookmarkInArray(bkId);
+                var newBKObj = {
+                    "id": "",
+                    "title": "",
+                    "url": "",
+                    "imageUrl": ""
+                }
+                document.getElementById("vm").removeChild(dialogEle);
+                setTimeout(() => {
+                    newBookmarkDialog("change-bookmark-dialog", bkId, "Change this:");
+                    document.getElementById("close-button-bookmark").addEventListener("click", function () {
+                        var bkTitle = document.getElementById("title-input").value;
+                        var newUrl = document.getElementById("url-input").value;
+                        var iconUrl = document.getElementById("icon-url-input").value;
+                        document.getElementById("vm")
+                            .removeChild(document.getElementById("change-bookmark-dialog"));
+
+                        var newId = "bookmark-" + newUrl;
+                        if (!strIsnull(bkTitle) && !strIsnull(newUrl)) {
+                            newBKObj.title = bkTitle;
+                            newBKObj.url = newUrl;
+                            newBKObj.id = newId;
+                            newBKObj.imageUrl = recongnizeIconUrl(iconUrl, newUrl);
+                            changeBookmarkInArray(bkToChange, newBKObj);
+                            //show new bookmark.
+                            changeBookmarkDom(bkToChange.id, newBKObj);
+                        }
+                    })
+                }, 10);
+            })
+            createEle("delete", null, "bkmenu-dialog", "button");
+            var deleteBtn = document.getElementById("delete");
+            deleteBtn.innerHTML = 'delete';
+            deleteBtn.addEventListener("click", function () {
+                delBookmarkFromArray(bkId);
+                document.getElementById("vm").removeChild(dialogEle);
+                document.getElementById("bookmark-container").removeChild(document.getElementById(bkId));
+            })
+        }
+    })
 }
 
 function setSearchHidden() {
@@ -52,6 +208,7 @@ function setSearchHidden() {
     }
     document.getElementById("search-container").className = "search-div-fade-in search-div";
     document.getElementById("hello-div").className = "hello hello-div-center";
+    document.getElementById("bookmark-container").style.opacity = 0;
     fetchData(daylyMottoAPI, daylyMottoRequestSuccessHandler, function () { });
     setTimeout(() => {
         app.$data.helloMsg = motto;
@@ -66,6 +223,7 @@ function setSearchVisible() {
     document.getElementById("search-container").className = "search-div";
     document.getElementById("hello-div").className = "hello hello-div-top";
     document.getElementById("search-input").focus();
+    document.getElementById("bookmark-container").style.opacity = 100;
     updateGreetMsg();//if very late stop show user name in greet words.
     app.$data.helloMsg = greetMsg;
     isSearchVisible = true;
@@ -89,7 +247,7 @@ function createEle(childId, className, parentId, type) {
     if (className) {
         child.className = className;
     }
-    document.getElementById(parentId).append(child);
+    document.getElementById(parentId).appendChild(child);
 }
 
 var daylyMottoAPI = 'https://v1.hitokoto.cn/';
@@ -107,92 +265,181 @@ var app = new Vue({
 
         weatherText: "",
         temp: 20,
-        weatherIconUrl: ""
+        weatherIconUrl: "",
+
+        isbookmarkfull: false
     },
     methods: {
         createSettingDiv: function (event) {
-            if (document.getElementById("setting-page-div")) {
-                return;
-            }
-            else {
-                createEle("setting-page-div", "setting-page-div", "vm", "div");
-                createEle("close-button-div-s", "close-btn-div", "setting-page-div", "div");
-                createEle("setting-title", "dialog-title", "close-button-div-s", "p")
-                createEle("close-button", "close-button", "close-button-div-s", "button");
-                createEle("name-div", "setting-form-div", "setting-page-div", "div");
-                createEle("name-label", null, "name-div", "label", "name");
-                createEle("name-input", null, "name-div", "input");
-                createEle("location-div", "setting-form-div", "setting-page-div", "div");
-                createEle("location-label", null, "location-div", "label");
-                createEle("location-input", null, "location-div", "input");
-                document.getElementById("setting-title").innerHTML = "setting";
-                var nameLabel = document.getElementById("name-label");
-                nameLabel.for = "name";
-                nameLabel.innerHTML = "name:";
-                document.getElementById("name-input").type = "text";
-                var locationLabel = document.getElementById("location-label");
-                locationLabel.for = "location";
-                locationLabel.innerHTML = "location:";
-                var locationInput = document.getElementById("location-input");
-                locationInput.type = "text";
-                locationInput.placeholder = "for example:jiangning,nanjing";
+            setTimeout(() => {
+                fn();
+            }, 10);
+            function fn() {
+                if (document.getElementById("setting-page-div")) {
+                    return;
+                }
+                else {
+                    createEle("setting-page-div", "dialog-div", "vm", "div");
+                    createEle("close-button-div-s", "close-btn-div", "setting-page-div", "div");
+                    createEle("setting-title", "dialog-title", "close-button-div-s", "p")
+                    createEle("close-button", "close-button", "close-button-div-s", "button");
+                    createEle("name-div", "setting-form-div", "setting-page-div", "div");
+                    createEle("name-label", null, "name-div", "label", "name");
+                    createEle("name-input", null, "name-div", "input");
+                    createEle("location-div", "setting-form-div", "setting-page-div", "div");
+                    createEle("location-label", null, "location-div", "label");
+                    createEle("location-input", null, "location-div", "input");
+                    document.getElementById("setting-title").innerHTML = "setting";
+                    var nameLabel = document.getElementById("name-label");
+                    nameLabel.for = "name";
+                    nameLabel.innerHTML = "name:";
+                    document.getElementById("name-input").type = "text";
+                    var locationLabel = document.getElementById("location-label");
+                    locationLabel.for = "location";
+                    locationLabel.innerHTML = "location:";
+                    var locationInput = document.getElementById("location-input");
+                    locationInput.type = "text";
+                    locationInput.placeholder = "eg:jiangning,nanjing";
 
-                document.getElementById("close-button").addEventListener("click", function () {
-                    var namestr = document.getElementById("name-input").value;
-                    if (!strIsnull(namestr)) {
-                        app.$data.name = namestr;
-                    }
-                    var location = document.getElementById("location-input").value;
-                    if (location.length > 4) {
-                        heWeatherAPI = 'https://free-api.heweather.net/s6/weather/now?location='
-                            + location
-                            + '&key=c2647375f06d4852a1f6883899e984b0';
-                        fetchData(heWeatherAPI, heWeatherRequestSuccessHandler, function () { });
-                    }
-                    document.getElementById("vm").removeChild(document.getElementById("setting-page-div"));
-                    saveSettings();
-                })
+                    var ele = document.getElementById("setting-btn");
+                    var dia = document.getElementById("setting-page-div");
+                    var topoffset = ele.offsetHeight + 5;
+                    var leftoffset = ele.offsetWidth - dia.offsetWidth;
+
+                    var duckDom = document.getElementById("setting-btn");
+
+                    fixDialogPosition(duckDom, "setting-page-div", topoffset, leftoffset);
+
+                    document.getElementById("close-button").addEventListener("click", function () {
+                        var namestr = document.getElementById("name-input").value;
+                        if (!strIsnull(namestr)) {
+                            app.$data.name = namestr;
+                        }
+                        var location = document.getElementById("location-input").value;
+                        if (location.length > 4) {
+                            heWeatherAPI = 'https://free-api.heweather.net/s6/weather/now?location='
+                                + location
+                                + '&key=c2647375f06d4852a1f6883899e984b0';
+                            fetchData(heWeatherAPI, heWeatherRequestSuccessHandler, function () { });
+                        }
+                        document.getElementById("vm").removeChild(document.getElementById("setting-page-div"));
+                        saveSettings();
+                    })
+                }
             }
         },
         createAddBookmarkDiv: function (event) {
-            if (document.getElementById("add-bookmark-dialog")) {
-                return;
+            var bookmarksNum = bookmarkObjs.length;
+            var bookmarkWidth = document.getElementById("new-bookmark-btn").offsetWidth
+                + 24;//add the padding
+            var isFull = false;
+            if ((bookmarksNum + 2) * bookmarkWidth > 0.9 * screen.width) {
+                isFull = true;
             }
-            else {
-                //create new bookmark dialog
-                createEle("add-bookmark-dialog", "add-bookmark-dialog-div", "vm", "div");
-                createEle("close-button-div-a", "close-btn-div", "add-bookmark-dialog", "div");
-                createEle("add-bookmark-title", "dialog-title", "close-button-div-a", "p");
-                createEle("close-button-bookmark", "close-button", "close-button-div-a", "button");
-                createEle("title-div", "setting-form-div", "add-bookmark-dialog", "div");
-                createEle("title-label", null, "title-div", "label");
-                createEle("title-input", null, "title-div", "input");
-                createEle("url-div", "setting-form-div", "add-bookmark-dialog", "div");
-                createEle("url-label", null, "url-div", "label");
-                createEle("url-input", null, "url-div", "input");
-                document.getElementById("add-bookmark-title").innerHTML = "add a bookmark"
-                var nameLabel = document.getElementById("title-label");
-                nameLabel.for = "title";
-                nameLabel.innerHTML = "title:";
-                var urlLabel = document.getElementById("url-label");
-                urlLabel.for = "url";
-                urlLabel.innerHTML = "url:";
-                document.getElementById("url-input").placeholder = "https://..."
-
-                //event listener : build new bookmark when click
+            setTimeout(() => {
+                newBookmarkDialog("add-bookmark-dialog", "new-bookmark-btn", "Add a bookmark:");
                 document.getElementById("close-button-bookmark").addEventListener("click", function () {
                     var bkTitle = document.getElementById("title-input").value;
                     var bkUrl = document.getElementById("url-input").value;
+                    var imageUrl = document.getElementById("icon-url-input").value;
                     document.getElementById("vm").removeChild(document.getElementById("add-bookmark-dialog"));
                     if (!strIsnull(bkTitle) && !strIsnull(bkUrl)) {
-                        createBookMark(bkTitle, bkUrl);
-                        addBookmark(bkTitle, bkUrl);
+                        imageUrl = recongnizeIconUrl(imageUrl, bkUrl);
+                        createBookMark(bkTitle, bkUrl, imageUrl);
+                        addBookmarkToArray(bkTitle, bkUrl);
+                        if (isFull) {
+                            app.$data.isbookmarkfull = true;
+                        }
                     }
                 })
-            }
+            }, 10);
         }
     }
 })
+
+function recongnizeIconUrl(imgUrl, url) {
+    imgUrl = imgUrl ? imgUrl : "";
+    imgUrl = imgUrl == "" ? getIconUrlFromStdUrl(url) : imgUrl;
+    return imgUrl;
+}
+
+function newBookmarkDialog(id, duckId, title) {
+    if (document.getElementById(id)) {
+        return;
+    }
+    else {
+        //create new bookmark dialog
+        createEle(id, "dialog-div", "vm", "div");
+        createEle("close-button-div-a", "close-btn-div", id, "div");
+        createEle("add-bookmark-title", "dialog-title", "close-button-div-a", "p");
+        createEle("close-button-bookmark", "close-button", "close-button-div-a", "button");
+        createEle("title-div", "setting-form-div", id, "div");
+        createEle("title-label", null, "title-div", "label");
+        createEle("title-input", null, "title-div", "input");
+        createEle("url-div", "setting-form-div", id, "div");
+        createEle("url-label", null, "url-div", "label");
+        createEle("url-input", null, "url-div", "input");
+        createEle("icon-url-div", "setting-form-div", id, "div");
+        createEle("icon-url-label", null, "icon-url-div", "label");
+        createEle("icon-url-input", null, "icon-url-div", "input");
+        document.getElementById("add-bookmark-title").innerHTML = title;
+        var titleLabel = document.getElementById("title-label");
+        titleLabel.for = "title";
+        titleLabel.innerHTML = "title:";
+        var urlLabel = document.getElementById("url-label");
+        urlLabel.for = "url";
+        urlLabel.innerHTML = "url:";
+        document.getElementById("url-input").placeholder = "https://..."
+
+        document.getElementById("icon-url-label").innerHTML = "iconUrl:";
+        document.getElementById("icon-url-input").placeholder = "(optional)";
+
+        var dia = document.getElementById(id);
+        document.getElementById("title-input").focus();
+
+        var topoffset = -dia.offsetHeight - 20;
+        var leftoffset = -document.getElementById("bookmark-container").offsetLeft
+
+        var duckDom = document.getElementById(duckId);
+
+        fixDialogPosition(duckDom, id, topoffset, leftoffset);
+        //event listener : build new bookmark when click
+    }
+}
+
+function fixDialogPosition(duckDom, dialogId, topOffset, leftOffset) {
+    var dia = document.getElementById(dialogId);
+
+    var diatop = getElementTop(duckDom) + topOffset;
+    var dialeft = getElementLeft(duckDom) + leftOffset;
+
+    dia.style.top = diatop + "px";
+    dia.style.left = dialeft + "px";
+}
+
+function getElementLeft(element) {
+    var actualLeft = element.offsetLeft;
+    var current = element.offsetParent;
+
+    while (current !== null) {
+        actualLeft += current.offsetLeft;
+        current = current.offsetParent;
+    }
+
+    return actualLeft;
+}
+
+function getElementTop(element) {
+    var actualTop = element.offsetTop;
+    var current = element.offsetParent;
+
+    while (current !== null) {
+        actualTop += current.offsetTop;
+        current = current.offsetParent;
+    }
+
+    return actualTop;
+}
 
 /**
  * save the user input on the setting dialog
@@ -210,12 +457,12 @@ function saveSettings() {
  */
 function readSettings(fn) {
     chrome.storage.sync.get('name', function (res) {
-        if (res) {
+        if (res.name) {
             app.$data.name = res.name;
         }
     });
     chrome.storage.sync.get('weatherAPI', function (res) {
-        if (res) {
+        if (res.heWeatherAPI) {
             heWeatherAPI = res.weatherAPI;
             fn();
         }
@@ -226,7 +473,10 @@ function readSettings(fn) {
  * save user bookmarks
  */
 function saveBookmarks() {
-    chrome.storage.sync.set({ 'bookmarks': bookmarkObjs }, function () {
+    chrome.storage.sync.set({
+        'bookmarks': bookmarkObjs
+        , 'isBookmarkFull': app.$data.isbookmarkfull
+    }, function () {
     });
 }
 
@@ -235,10 +485,15 @@ function saveBookmarks() {
  */
 function readBookmarks() {
     chrome.storage.sync.get('bookmarks', function (res) {
-        bookmarkObjs = res.bookmarks;
-        bookmarkObjs.forEach(element => {
-            createBookMark(element.title, element.url);
-        });
+        if (res.bookmarks) {
+            bookmarkObjs = res.bookmarks;
+            bookmarkObjs.forEach(element => {
+                createBookMark(element.title, element.url, element.imageUrl);
+            });
+        }
+        if (res.isBookmarkFull) {
+            app.$data.isbookmarkfull = res.isBookmarkFull;
+        }
     })
 }
 
@@ -372,6 +627,7 @@ document.onkeydown = function (e) {
     }
 }
 
+
 window.onload = function () {
     //document.getElementById("search-input").addEventListener("blur", setSearchHidden);
     //document.getElementById("new-bookmark-btn").addEventListener("click", addBookmark);
@@ -387,3 +643,18 @@ window.onload = function () {
 }
 
 
+/**
+ * when blank place be clicked,
+ * all dialog will be deleted.
+ * so,if want to press a button to call a dialog out,
+ * use settimeout to aviod the new dialog be deleted.
+ */
+document.addEventListener('click', function (event) {
+    var idList = ["add-bookmark-dialog", "setting-page-div", "bkmenu-dialog", "change-bookmark-dialog"];
+    idList.forEach(element => {
+        var cdom = document.getElementById(element);
+        if ((cdom && event.target != cdom) && !cdom.contains(event.target)) {
+            document.getElementById("vm").removeChild(cdom);
+        }
+    });
+})
