@@ -1,6 +1,6 @@
 {
-    "name": "Chrome New Tab",
-    "version": "1.0",
+    "name": "New Tab Page",
+    "version": "1.0.0",
     "manifest_version": 2,
     "description": "A simple new tab page extension.",
     "chrome_url_overrides": {
@@ -8,7 +8,7 @@
     },
     "author":"zhuwenq",
     "browser_action":{
-        "default_icon":"icon/main-icon.png",
+        "default_icon":"/icon/main-icon.png",
         "default_title":"Have a good day!"
     },
     "permissions":[

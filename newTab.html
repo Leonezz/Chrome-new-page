@@ -7,7 +7,7 @@
         new tab page
     </title>
     <script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
-    <link href="js/stylesheet.css" rel="stylesheet" style="text/css" />
+    <link href="css/stylesheet.css" rel="stylesheet" style="text/css" />
 </head>
 
 <body class="backGround">
@@ -23,6 +23,11 @@
             <div id="search-container" class="search-div">
                 <input id="search-input" name="ser-input" class="search-input" autocomplete="off" tabindex="-1"
                     type="url" placeholder="What do you want to know?" aria-hidden="true">
+            </div>
+            <div id="bookmark-container" class="bookmark-container-div">
+                <button id="new-bookmark-btn" class="bookmark-div" v-on:click="createAddBookmarkDiv">
+                    <div id="bookmark-btn-content" class="bookmark-div-content-btn"></div>
+                </button>
             </div>
             <div id="weather-container" class="weather-div">
                 <div id="firstRow" class="first-row">

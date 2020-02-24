@@ -21,7 +21,7 @@ html, body {
 .search-div {
     font-family: Arial Microsoft YaHei Ui;
     font-size: medium;
-    z-index: 705;
+    z-index: 5;
     position: absolute;
     min-height: 44px;
     width: 70%;
@@ -77,7 +77,7 @@ input, button:active {
     font-family: 'Microsoft YaHei';
     text-align: center;
     color: rgba(245, 245, 220, 0.8);
-    z-index: 100;
+    z-index: 2;
     position: relative;
     transition-duration: 500ms;
     transition-timing-function: ease-in-out;
@@ -99,7 +99,7 @@ input, button:active {
 }
 
 .weather-div {
-    z-index: 705;
+    z-index: 3;
     position: absolute;
     margin: 0;
     padding: 0;
@@ -152,7 +152,7 @@ input, button:active {
 }
 
 .copyright-div {
-    z-index: 705;
+    z-index: 4;
     position: absolute;
     margin: 0;
     padding: 0;
@@ -182,7 +182,7 @@ input, button:active {
     border-radius: 7px;
     position: absolute;
     margin: 0;
-    padding-bottom: 20px;
+    padding: 16px;
     border: 0;
     top: 50px;
     right: 20px;
@@ -193,11 +193,21 @@ input, button:active {
     background: rgba(0, 0, 0, 0.2);
 }
 
-.close-btn-div {
+.dialog-title {
+    float: left;
     height: 32px;
+    font-family: consolas;
+    line-height: 32px;
+    font-size: x-large;
+    color: aqua;
 }
 
-.close-btn-div>button:active {
+.close-btn-div {
+    height: 32px;
+    z-index: 5;
+}
+
+button:active {
     border-color: #66afe9;
     outline: 0;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
@@ -245,4 +255,122 @@ input, button:active {
 
 .setting-form-div>input::placeholder {
     font-family: consolas;
+}
+
+.bookmark-container-div {
+    z-index: 4;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    bottom: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: 90px;
+}
+
+.bookmark-div {
+    padding: 0;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 120px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    float: right;
+    border: 0;
+    outline: none;
+    border-radius: 5px;
+}
+
+
+
+.bookmark-div-content-btn {
+    height: 60px;
+    width: 60px;
+    left: 50%;
+    transform: translateX(50%);
+    vertical-align: center;
+    background: url("../icon/add.svg")no-repeat 0px center;
+}
+
+.add-bookmark-dialog-div {
+    z-index: 5;
+    border: 0px;
+    border-radius: 7px;
+    position: absolute;
+    margin: 0;
+    padding: 16px;
+    border: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 300px;
+    height: auto;
+    width: 400px;
+    backdrop-filter: blur(15px);
+    /* 设置背景半透明黑色 */
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.bookmark-action-btn {
+    z-index: 5;
+    top: 0;
+    float: right;
+    border: 0;
+    border-radius: 2px;
+    outline: none;
+    background: none;
+}
+
+.bookmark-action-icon-div {
+    width: 24px;
+    height: 24px;
+    padding-right: 2px;
+    background: url("../icon/more.svg")no-repeat center;
+}
+
+.bookmark-main-div {
+    padding: 12px;
+    width: 96px;
+    height: 66px;
+}
+
+.bookmark-main-div:active {
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .1), 0 0 8px rgba(102, 175, 233, .6)
+}
+
+.bookmark-icon {
+    margin-top: 8px;
+    width: 32px;
+    height: 32px;
+    left: 50%;
+    transform: translateX(100%);
+    border: none;
+    outline: none;
+    background: url("../icon/search.png")no-repeat center;
+    display:flex;
+	align-items:center; 
+	justify-content:center;
+}
+
+/*去边框*/
+img[src=""] {
+    opacity: 0;
+}
+
+a:link,a:hover,a:visited,a:active{
+    text-decoration: none;
+}
+
+.bookmark-title {
+    margin-top: 12px;
+    height: 12px;
+    line-height: 12px;
+    text-align: center;
+    font-family: Microsoft YaHei;
+    font-size: medium;
+    color: aqua;
+    bottom: 0px;
 }

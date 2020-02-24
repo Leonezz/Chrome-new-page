@@ -3,6 +3,49 @@
 var greetMsg = "";
 var motto = "";
 var isSearchVisible = true;
+
+/**
+ * opreate array bookmarkObjs with menber functions only!
+ * the function takes valid args only
+ */
+var bookmarkObjs = [];
+
+function addBookmark(title, url) {
+    var bk = {
+        "id": "bookmark-" + url,//id should be unique
+        "title": title,
+        "url": url
+    }
+    bookmarkObjs.push(bk);
+    saveBookmarks();
+}
+
+function delBookmark(_id) {
+    bookmarkObjs.splice(bookmarkObjs.findIndex(item => item.id === _id), 1);
+    saveBookmarks();
+}
+
+function createBookMark(title, url) {
+    var bkId = "bookmark-" + url;
+    createEle(bkId, "bookmark-div", "bookmark-container", "div");
+    createEle(bkId + "-btn", "bookmark-action-btn", bkId, "button");
+    createEle(bkId + "-btn-div", "bookmark-action-icon-div", bkId + "-btn", "div");
+    createEle(bkId + "-a", null, bkId, "a");
+    createEle(bkId + "-a-div", "bookmark-main-div", bkId + "-a", "div");
+    createEle(bkId + "-a-div-div-1", "bookmark-icon", bkId + "-a-div", "div");
+    createEle(bkId + "-a-div-div-2", "bookmark-title", bkId + "-a-div", "div");
+    document.getElementById(bkId + "-a").href = url;
+    document.getElementById(bkId + "-a-div-div-2").innerHTML = title;
+    var domain = url.split("/")[2];
+    if (domain) {
+        domain = url.split("/")[0] + domain;
+    }
+    else {
+        domain = "";
+    }
+    document.getElementById(bkId + "-a-div-div-1").style.background = "url(" + domain + "/favicon.ico) no-repeat 0px center";
+}
+
 function setSearchHidden() {
     if (!isSearchVisible) {
         return;
@@ -27,6 +70,28 @@ function setSearchVisible() {
     app.$data.helloMsg = greetMsg;
     isSearchVisible = true;
 }
+
+/**
+ * 
+ * @param {elementId} childId 
+ * @param {elementClass} className 
+ * @param {elementParentId} parentId 
+ * @param {elementType} type 
+ * create an new element with id={childId} and class={className}
+ * the new element will be child of {parentId}
+ * new element is a {type} element
+ */
+function createEle(childId, className, parentId, type) {
+    var child = document.createElement(type);
+    if (childId) {
+        child.id = childId;
+    }
+    if (className) {
+        child.className = className;
+    }
+    document.getElementById(parentId).append(child);
+}
+
 var daylyMottoAPI = 'https://v1.hitokoto.cn/';
 var bingImageAPI = 'https://jsonp.afeld.me/?url=http%3A%2F%2Fcn.bing.com%2FHPImageArchive.aspx%3Fformat%3Djs%26idx%3D0%26n%3D1';
 var heWeatherAPI = 'https://free-api.heweather.net/s6/weather/now?location=jiangning,nanjing&key=c2647375f06d4852a1f6883899e984b0';
@@ -50,24 +115,17 @@ var app = new Vue({
                 return;
             }
             else {
-                function createEle(childId, className, parentId, type) {
-                    var child = document.createElement(type);
-                    child.id = childId;
-                    if (className) {
-                        child.className = className;
-                    }
-                    document.getElementById(parentId).append(child);
-                }
-
                 createEle("setting-page-div", "setting-page-div", "vm", "div");
-                createEle("close-button-div", "close-btn-div", "setting-page-div", "div");
-                createEle("close-button", "close-button", "close-button-div", "button");
+                createEle("close-button-div-s", "close-btn-div", "setting-page-div", "div");
+                createEle("setting-title", "dialog-title", "close-button-div-s", "p")
+                createEle("close-button", "close-button", "close-button-div-s", "button");
                 createEle("name-div", "setting-form-div", "setting-page-div", "div");
                 createEle("name-label", null, "name-div", "label", "name");
                 createEle("name-input", null, "name-div", "input");
                 createEle("location-div", "setting-form-div", "setting-page-div", "div");
                 createEle("location-label", null, "location-div", "label");
                 createEle("location-input", null, "location-div", "input");
+                document.getElementById("setting-title").innerHTML = "setting";
                 var nameLabel = document.getElementById("name-label");
                 nameLabel.for = "name";
                 nameLabel.innerHTML = "name:";
@@ -95,10 +153,50 @@ var app = new Vue({
                     saveSettings();
                 })
             }
+        },
+        createAddBookmarkDiv: function (event) {
+            if (document.getElementById("add-bookmark-dialog")) {
+                return;
+            }
+            else {
+                //create new bookmark dialog
+                createEle("add-bookmark-dialog", "add-bookmark-dialog-div", "vm", "div");
+                createEle("close-button-div-a", "close-btn-div", "add-bookmark-dialog", "div");
+                createEle("add-bookmark-title", "dialog-title", "close-button-div-a", "p");
+                createEle("close-button-bookmark", "close-button", "close-button-div-a", "button");
+                createEle("title-div", "setting-form-div", "add-bookmark-dialog", "div");
+                createEle("title-label", null, "title-div", "label");
+                createEle("title-input", null, "title-div", "input");
+                createEle("url-div", "setting-form-div", "add-bookmark-dialog", "div");
+                createEle("url-label", null, "url-div", "label");
+                createEle("url-input", null, "url-div", "input");
+                document.getElementById("add-bookmark-title").innerHTML = "add a bookmark"
+                var nameLabel = document.getElementById("title-label");
+                nameLabel.for = "title";
+                nameLabel.innerHTML = "title:";
+                var urlLabel = document.getElementById("url-label");
+                urlLabel.for = "url";
+                urlLabel.innerHTML = "url:";
+                document.getElementById("url-input").placeholder = "https://..."
+
+                //event listener : build new bookmark when click
+                document.getElementById("close-button-bookmark").addEventListener("click", function () {
+                    var bkTitle = document.getElementById("title-input").value;
+                    var bkUrl = document.getElementById("url-input").value;
+                    document.getElementById("vm").removeChild(document.getElementById("add-bookmark-dialog"));
+                    if (!strIsnull(bkTitle) && !strIsnull(bkUrl)) {
+                        createBookMark(bkTitle, bkUrl);
+                        addBookmark(bkTitle, bkUrl);
+                    }
+                })
+            }
         }
     }
 })
 
+/**
+ * save the user input on the setting dialog
+ */
 function saveSettings() {
     chrome.storage.sync.set({ 'name': app.$data.name, 'weatherAPI': heWeatherAPI },
         function () {
@@ -106,6 +204,10 @@ function saveSettings() {
         });
 }
 
+/**
+ * @param {fetch weather data handler} fn 
+ * read user setting on the setting dialog
+ */
 function readSettings(fn) {
     chrome.storage.sync.get('name', function (res) {
         if (res) {
@@ -120,6 +222,32 @@ function readSettings(fn) {
     });
 }
 
+/**
+ * save user bookmarks
+ */
+function saveBookmarks() {
+    chrome.storage.sync.set({ 'bookmarks': bookmarkObjs }, function () {
+    });
+}
+
+/**
+ * read user bookmarks
+ */
+function readBookmarks() {
+    chrome.storage.sync.get('bookmarks', function (res) {
+        bookmarkObjs = res.bookmarks;
+        bookmarkObjs.forEach(element => {
+            createBookMark(element.title, element.url);
+        });
+    })
+}
+
+/**
+ * @param {url where to fetch} url 
+ * @param {*} successCallBack 
+ * @param {*} errorCallBack 
+ * fetch internet data
+ */
 function fetchData(url, successCallBack, errorCallBack) {
     fetch(url)
         .then(function (response) {
@@ -203,6 +331,7 @@ function strIsnull(val) {
     }
 }
 
+
 document.onkeydown = function (e) {
     var event = event || window.event;
     var searchInput = document.getElementById("search-input");
@@ -245,10 +374,10 @@ document.onkeydown = function (e) {
 
 window.onload = function () {
     //document.getElementById("search-input").addEventListener("blur", setSearchHidden);
+    //document.getElementById("new-bookmark-btn").addEventListener("click", addBookmark);
     this.setSearchHidden();
-
+    readBookmarks();
     this.readSettings(function () {
-        console.log(heWeatherAPI);
         fetchData(heWeatherAPI, heWeatherRequestSuccessHandler, function () { });
     });
 
