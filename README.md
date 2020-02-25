@@ -56,6 +56,10 @@ I like this little function,maybe I can add more little functions like this.
 
 ![](https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/imgs/4.png)
 
+now bookmarks can be added to tabpage.
+
+![](https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/imgs/5.png)
+
 ## License
 
 [MIT](https://github.com/Leonezz/Chrome-new-page/blob/master/LISENCE)
