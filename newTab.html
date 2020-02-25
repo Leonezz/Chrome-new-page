@@ -25,7 +25,8 @@
                     type="url" placeholder="What do you want to know?" aria-hidden="true">
             </div>
             <div id="bookmark-container" class="bookmark-container-div">
-                <div v-if="!isbookmarkfull" id="new-bookmark-btn" class="bookmark-div" v-on:click="createAddBookmarkDiv">
+                <div v-if="!isbookmarkfull" id="new-bookmark-btn" class="bookmark-div"
+                    v-on:click="createAddBookmarkDiv">
                     <div id="bookmark-btn-content" class="bookmark-div-content-btn"></div>
                 </div>
             </div>
@@ -33,8 +34,7 @@
                 <div id="firstRow" class="first-row">
                     <div id="weatherIcon" class="weather-icon"
                         v-bind:style="{background: 'url('+weatherIconUrl+') no-repeat 0px center'}"></div>
-                    <div id="tempText" class="temp-text">{{temp}}<font size="63px">&#8451</font>
-                    </div>
+                    <div id="tempText" class="temp-text">{{temp}}</div>
                 </div>
                 <div id="secondRow" class="second-row">
                     <div id="weather-text" class="weather-text">{{weatherText}}</div>

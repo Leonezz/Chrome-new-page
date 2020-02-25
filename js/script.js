@@ -267,7 +267,7 @@ var app = new Vue({
         picCopyRightLink: "",
 
         weatherText: "",
-        temp: 20,
+        temp: "20℃",
         weatherIconUrl: "",
 
         isbookmarkfull: false
@@ -540,7 +540,7 @@ function heWeatherRequestSuccessHandler(response) {
             + " "
             + json.HeWeather6[0].now.wind_sc
             + "级";
-        app.$data.temp = json.HeWeather6[0].now.tmp;
+        app.$data.temp = json.HeWeather6[0].now.tmp + "℃";
         let date = new Date();
         let hour = date.getHours();
         let night = "";
