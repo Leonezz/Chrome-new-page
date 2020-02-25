@@ -28,7 +28,7 @@ html, body {
     top: 0px;
     left: 50%;
     transform: translate(-50%, 300px);
-    background: url("icon/search.png") no-repeat 3px center;
+    background: url("https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/icon/search.png") no-repeat 3px center;
     opacity: 100;
     transition-property: opacity;
     transition-duration: 500ms;
@@ -109,6 +109,10 @@ input, button:active {
 
 .first-row {
     display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
 }
 
 .second-row {
@@ -129,25 +133,23 @@ input, button:active {
     bottom: 0;
     height: 35px;
     width: 35px;
-    background: url("icon/location.png") no-repeat center;
+    background: url("https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/icon/location.png") no-repeat center;
     float: right;
     margin-left: auto;
 }
 
 .weather-icon {
-    flex: none;
-    height: 100px;
-    width: 100px;
+    height: 128px;
+    width: 128px;
     bottom: 0;
 }
 
 .temp-text {
-    line-height: 100px;
+    line-height: 128px;
     padding: 0;
     vertical-align: auto;
-    flex: 1;
     font-family: 'Microsoft YaHei';
-    font-size: 64px;
+    font-size: 72px;
     color: aliceblue;
 }
 
@@ -166,7 +168,7 @@ input, button:active {
 }
 
 .setting-btn {
-    background: url("/icon/setting.png");
+    background: url("https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/icon/setting.png");
     position: absolute;
     margin: 0;
     padding: 0;
@@ -186,7 +188,7 @@ input, button:active {
     padding: 16px;
     border: 0;
     height: auto;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(5px);
     /* 设置背景半透明黑色 */
     background: rgba(0, 0, 0, 0.2);
 }
@@ -235,7 +237,7 @@ button:active {
     float: right;
     top: 0;
     border: 0px;
-    background: url("icon/close.png");
+    background: url("https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/icon/close.png");
 }
 
 .setting-form-div {
@@ -299,7 +301,8 @@ button:active {
     margin-right: 10px;
     width: 120px;
     height: 100%;
-    background: rgba(0, 0, 0, .4);
+    backdrop-filter: blur(1px);
+    background: rgba(0, 0, 0, .2);
     border: 0;
     outline: none;
     border-radius: 5px;
@@ -313,7 +316,7 @@ button:active {
     top: 50%;
     transform: translate(30px,15px);
     vertical-align: center;
-    background: url("../icon/add.svg")no-repeat 0px center;
+    background: url("https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/icon/add.png")no-repeat 0px center;
 }
 
 .bookmark-action-btn {
@@ -334,7 +337,7 @@ button:active {
     width: 24px;
     height: 24px;
     padding-right: 2px;
-    background: url("../icon/more.svg")no-repeat center;
+    background: url("https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/icon/more.png")no-repeat center;
 }
 
 .bookmark-main-div {

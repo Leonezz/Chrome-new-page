@@ -70,7 +70,7 @@ function changeBookmarkDom(oldId, newBookmark) {
     document.getElementById(newId + "-a").href = newUrl;
     document.getElementById(newId + "-a-div-div-2").innerHTML = newTitle;
 
-    document.getElementById(newId + "-a-div-div-1").style.background
+    document.getElementById(newId + "-a-div-div-1").style.backgroundImage
         = "url(\"" + newBookmark.imageUrl + "\")";
 }
 
@@ -121,23 +121,25 @@ String.prototype.leftCodes = function (num) {
 function createBookMark(title, url, imgUrl) {
     var bkId = "bookmark-" + url;
     createEle(bkId, "bookmark-div", "bookmark-container", "div");
-    createEle(bkId + "-btn", "bookmark-action-btn", bkId, "button");
-    createEle(bkId + "-btn-div", "bookmark-action-icon-div", bkId + "-btn", "div");
-    createEle(bkId + "-a", null, bkId, "a");
-    createEle(bkId + "-a-div", "bookmark-main-div", bkId + "-a", "div");
-    createEle(bkId + "-a-div-div-1", "bookmark-icon", bkId + "-a-div", "div");
-    createEle(bkId + "-a-div-div-2", "bookmark-title", bkId + "-a-div", "div");
-    document.getElementById(bkId + "-a").href = url;
-    document.getElementById(bkId + "-a-div-div-2").innerHTML
+
+    var bookmarkDom = document.getElementById(bkId);
+
+    createEle(bookmarkDom.id + "-btn", "bookmark-action-btn", bookmarkDom.id, "button");
+    createEle(bookmarkDom.id + "-btn-div", "bookmark-action-icon-div", bookmarkDom.id + "-btn", "div");
+    createEle(bookmarkDom.id + "-a", null, bookmarkDom.id, "a");
+    createEle(bookmarkDom.id + "-a-div", "bookmark-main-div", bookmarkDom.id + "-a", "div");
+    createEle(bookmarkDom.id + "-a-div-div-1", "bookmark-icon", bookmarkDom.id + "-a-div", "div");
+    createEle(bookmarkDom.id + "-a-div-div-2", "bookmark-title", bookmarkDom.id + "-a-div", "div");
+    document.getElementById(bookmarkDom.id + "-a").href = url;
+    document.getElementById(bookmarkDom.id + "-a-div-div-2").innerHTML
         = title.gblen() > 11 ? title.leftCodes(12) + "..." : title;
 
     imgUrl = recongnizeIconUrl(imgUrl, url);
 
-    document.getElementById(bkId + "-a-div-div-1").style.background
+    document.getElementById(bookmarkDom.id + "-a-div-div-1").style.backgroundImage
         = "url(\"" + imgUrl + "\")";
 
-
-    document.getElementById(bkId + "-btn").addEventListener("click", function (event) {
+    document.getElementById(bookmarkDom.id + "-btn").addEventListener("click", function (event) {
         setTimeout(() => {
             fn();
         }, 10);
@@ -151,7 +153,7 @@ function createBookMark(title, url, imgUrl) {
 
             var dialogEle = document.getElementById("bkmenu-dialog");
 
-            //var btn = document.getElementById(bkId + "-btn");
+            //var btn = document.getElementById(bookmarkDom.id + "-btn");
             var topoffset = -dialogEle.offsetHeight - 20;
             var leftoffset = -document.getElementById("bookmark-container").offsetLeft
                 + event.target.parentNode.offsetWidth / 1.8;
@@ -160,7 +162,7 @@ function createBookMark(title, url, imgUrl) {
             dialogEle.style.padding = "5px";
 
             changeBtn.addEventListener("click", function () {
-                var bkToChange = findBookmarkInArray(bkId);
+                var bkToChange = findBookmarkInArray(bookmarkDom.id);
                 var newBKObj = {
                     "id": "",
                     "title": "",
@@ -168,8 +170,9 @@ function createBookMark(title, url, imgUrl) {
                     "imageUrl": ""
                 }
                 document.getElementById("vm").removeChild(dialogEle);
+
                 setTimeout(() => {
-                    newBookmarkDialog("change-bookmark-dialog", bkId, "Change this:");
+                    newBookmarkDialog("change-bookmark-dialog", bookmarkDom, "Change this:");
                     document.getElementById("close-button-bookmark").addEventListener("click", function () {
                         var bkTitle = document.getElementById("title-input").value;
                         var newUrl = document.getElementById("url-input").value;
@@ -194,9 +197,9 @@ function createBookMark(title, url, imgUrl) {
             var deleteBtn = document.getElementById("delete");
             deleteBtn.innerHTML = 'delete';
             deleteBtn.addEventListener("click", function () {
-                delBookmarkFromArray(bkId);
+                delBookmarkFromArray(bookmarkDom.id);
                 document.getElementById("vm").removeChild(dialogEle);
-                document.getElementById("bookmark-container").removeChild(document.getElementById(bkId));
+                document.getElementById("bookmark-container").removeChild(document.getElementById(bookmarkDom.id));
             })
         }
     })
@@ -329,15 +332,16 @@ var app = new Vue({
             }
         },
         createAddBookmarkDiv: function (event) {
+            var addBookmarkButtonDom = document.getElementById("new-bookmark-btn");
             var bookmarksNum = bookmarkObjs.length;
-            var bookmarkWidth = document.getElementById("new-bookmark-btn").offsetWidth
+            var bookmarkWidth = addBookmarkButtonDom.offsetWidth
                 + 24;//add the padding
             var isFull = false;
             if ((bookmarksNum + 2) * bookmarkWidth > 0.9 * screen.width) {
                 isFull = true;
             }
             setTimeout(() => {
-                newBookmarkDialog("add-bookmark-dialog", "new-bookmark-btn", "Add a bookmark:");
+                newBookmarkDialog("add-bookmark-dialog", addBookmarkButtonDom, "Add a bookmark:");
                 document.getElementById("close-button-bookmark").addEventListener("click", function () {
                     var bkTitle = document.getElementById("title-input").value;
                     var bkUrl = document.getElementById("url-input").value;
@@ -363,7 +367,7 @@ function recongnizeIconUrl(imgUrl, url) {
     return imgUrl;
 }
 
-function newBookmarkDialog(id, duckId, title) {
+function newBookmarkDialog(id, duckDom, title) {
     if (document.getElementById(id)) {
         return;
     }
@@ -399,8 +403,6 @@ function newBookmarkDialog(id, duckId, title) {
 
         var topoffset = -dia.offsetHeight - 20;
         var leftoffset = -document.getElementById("bookmark-container").offsetLeft
-
-        var duckDom = document.getElementById(duckId);
 
         fixDialogPosition(duckDom, id, topoffset, leftoffset);
         //event listener : build new bookmark when click
@@ -462,7 +464,7 @@ function readSettings(fn) {
         }
     });
     chrome.storage.sync.get('weatherAPI', function (res) {
-        if (res.heWeatherAPI) {
+        if (res.weatherAPI) {
             heWeatherAPI = res.weatherAPI;
             fn();
         }
@@ -545,7 +547,7 @@ function heWeatherRequestSuccessHandler(response) {
         if (!(hour > 4 && hour < 19)) {
             night = "n";
         }
-        app.$data.weatherIconUrl = "icon/svg/" + json.HeWeather6[0].now.cond_code + night + ".svg";
+        app.$data.weatherIconUrl = "https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/icon/png/" + json.HeWeather6[0].now.cond_code + night + ".png";
     });
 }
 
@@ -632,14 +634,14 @@ window.onload = function () {
     //document.getElementById("search-input").addEventListener("blur", setSearchHidden);
     //document.getElementById("new-bookmark-btn").addEventListener("click", addBookmark);
     this.setSearchHidden();
-    readBookmarks();
+
     this.readSettings(function () {
         fetchData(heWeatherAPI, heWeatherRequestSuccessHandler, function () { });
     });
-
     fetchData(bingImageAPI, bingImageRequestSuccessHandler, function () { });
     fetchData(daylyMottoAPI, daylyMottoRequestSuccessHandler, function () { });
     updateGreetMsg();
+    readBookmarks();
 }
 
 
