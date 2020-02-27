@@ -6,9 +6,9 @@
 
 ## Donate
 
-![donate](https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/icon/donate.png)
-
 ![logo](https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/icon/main-icon.png)
+
+![donate](https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/icon/donate.png)
 
 ## Background
 
