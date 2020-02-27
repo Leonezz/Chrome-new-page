@@ -71,7 +71,7 @@ function changeBookmarkDom(oldId, newBookmark) {
     document.getElementById(newId + "-a-div-div-2").innerHTML = newTitle;
 
     document.getElementById(newId + "-a-div-div-1").style.backgroundImage
-        = "url(\"" + newBookmark.imageUrl + "\")";
+        = "url(\"" + newBookmark.imageUrl + "\") no-repeat 0px center";
 }
 
 /**
@@ -137,7 +137,7 @@ function createBookMark(title, url, imgUrl) {
     imgUrl = recongnizeIconUrl(imgUrl, url);
 
     document.getElementById(bookmarkDom.id + "-a-div-div-1").style.backgroundImage
-        = "url(\"" + imgUrl + "\")";
+        = "url(\"" + imgUrl + "\") no-repeat 0px center";
 
     document.getElementById(bookmarkDom.id + "-btn").addEventListener("click", function (event) {
         setTimeout(() => {
