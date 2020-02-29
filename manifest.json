@@ -1,6 +1,6 @@
 {
-    "name": "New Tab Page Dev",
-    "version": "1.0.02",
+    "name": "New Tab Page",
+    "version": "1.0.03",
     "manifest_version": 2,
     "description": "A simple new tab page extension.",
     "chrome_url_overrides": {
