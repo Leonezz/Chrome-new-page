@@ -1,19 +1,20 @@
 {
     "name": "New Tab Page",
-    "version": "1.0.03",
+    "version": "1.0.05",
     "manifest_version": 2,
     "description": "A simple new tab page extension.",
     "chrome_url_overrides": {
         "newtab": "/html/newTab.html"
     },
-    "author":"zhuwenq",
-    "browser_action":{
-        "default_icon":"/icon/main-icon.png",
-        "default_title":"Have a good day!",
-        "default_popup":"/html/popup.html"
+    "author": "zhuwenq",
+    "browser_action": {
+        "default_icon": "/icon/main-icon.png",
+        "default_title": "Have a good day!",
+        "default_popup": "/html/popup.html"
     },
-    "permissions":[
-        "storage"
+    "permissions": [
+        "storage",
+        "*://*.alapi.cn/"
     ],
     "content_security_policy": "script-src 'self' 'unsafe-eval'"
 }

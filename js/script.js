@@ -71,7 +71,7 @@ function changeBookmarkDom(oldId, newBookmark) {
     document.getElementById(newId + "-a-div-div-2").innerHTML = newTitle;
 
     document.getElementById(newId + "-a-div-div-1").style.backgroundImage
-        = "url(\"" + newBookmark.imageUrl + "\") no-repeat 0px center";
+        = "url(" + newBookmark.imageUrl + ")";
 }
 
 /**
@@ -137,7 +137,7 @@ function createBookMark(title, url, imgUrl) {
     imgUrl = recongnizeIconUrl(imgUrl, url);
 
     document.getElementById(bookmarkDom.id + "-a-div-div-1").style.backgroundImage
-        = "url(\"" + imgUrl + "\") no-repeat 0px center";
+        = "url(" + imgUrl + ")";
 
     document.getElementById(bookmarkDom.id + "-btn").addEventListener("click", function (event) {
         setTimeout(() => {
@@ -173,6 +173,13 @@ function createBookMark(title, url, imgUrl) {
 
                 setTimeout(() => {
                     newBookmarkDialog("change-bookmark-dialog", bookmarkDom, "Change this:");
+
+                    document.getElementById("title-input").value = bkToChange.title;
+                    document.getElementById("url-input").value = bkToChange.url;
+                    if (!strIsEmpty(bkToChange.imageUrl)) {
+                        document.getElementById("icon-url-input").value = bkToChange.imageUrl;
+                    }
+
                     document.getElementById("close-button-bookmark").addEventListener("click", function () {
                         var bkTitle = document.getElementById("title-input").value;
                         var newUrl = document.getElementById("url-input").value;
@@ -181,7 +188,7 @@ function createBookMark(title, url, imgUrl) {
                             .removeChild(document.getElementById("change-bookmark-dialog"));
 
                         var newId = "bookmark-" + newUrl;
-                        if (!strIsnull(bkTitle) && !strIsnull(newUrl)) {
+                        if (!strIsEmpty(bkTitle) && !strIsEmpty(newUrl)) {
                             newBKObj.title = bkTitle;
                             newBKObj.url = newUrl;
                             newBKObj.id = newId;
@@ -253,8 +260,8 @@ function createEle(childId, className, parentId, type) {
     document.getElementById(parentId).appendChild(child);
 }
 
-var daylyMottoAPI = 'https://v1.hitokoto.cn/';
-var bingImageAPI = 'https://jsonp.afeld.me/?url=http%3A%2F%2Fcn.bing.com%2FHPImageArchive.aspx%3Fformat%3Djs%26idx%3D0%26n%3D1';
+var daylyMottoAPI = 'https://v1.alapi.cn/api/shici';
+var bingImageAPI = 'http://v1.alapi.cn/api/bing?format=json';
 var heWeatherAPI = 'https://free-api.heweather.net/s6/weather/now?location=jiangning,nanjing&key=c2647375f06d4852a1f6883899e984b0';
 var app = new Vue({
     el: '#app',
@@ -262,6 +269,7 @@ var app = new Vue({
         imageUrl: "",
         helloMsg: greetMsg,
         name: "",
+        location: "",
         showname: false,
         picCopyRight: "",
         picCopyRightLink: "",
@@ -302,7 +310,16 @@ var app = new Vue({
                     locationLabel.innerHTML = "location:";
                     var locationInput = document.getElementById("location-input");
                     locationInput.type = "text";
-                    locationInput.placeholder = "eg:jiangning,nanjing";
+
+                    if (app.$data.location) {
+                        locationInput.value = app.$data.location;
+                    } else {
+                        locationInput.placeholder = "eg:jiangning,nanjing";
+                    }
+
+                    if (!strIsEmpty(app.$data.name)) {
+                        document.getElementById("name-input").value = app.$data.name;
+                    }
 
                     var ele = document.getElementById("setting-btn");
                     var dia = document.getElementById("setting-page-div");
@@ -315,11 +332,12 @@ var app = new Vue({
 
                     document.getElementById("close-button").addEventListener("click", function () {
                         var namestr = document.getElementById("name-input").value;
-                        if (!strIsnull(namestr)) {
+                        if (!strIsEmpty(namestr)) {
                             app.$data.name = namestr;
                         }
                         var location = document.getElementById("location-input").value;
                         if (location.length > 4) {
+                            app.$data.location = location;
                             heWeatherAPI = 'https://free-api.heweather.net/s6/weather/now?location='
                                 + location
                                 + '&key=c2647375f06d4852a1f6883899e984b0';
@@ -347,7 +365,7 @@ var app = new Vue({
                     var bkUrl = document.getElementById("url-input").value;
                     var imageUrl = document.getElementById("icon-url-input").value;
                     document.getElementById("vm").removeChild(document.getElementById("add-bookmark-dialog"));
-                    if (!strIsnull(bkTitle) && !strIsnull(bkUrl)) {
+                    if (!strIsEmpty(bkTitle) && !strIsEmpty(bkUrl)) {
                         imageUrl = recongnizeIconUrl(imageUrl, bkUrl);
                         createBookMark(bkTitle, bkUrl, imageUrl);
                         addBookmarkToArray(bkTitle, bkUrl);
@@ -520,10 +538,14 @@ function fetchData(url, successCallBack, errorCallBack) {
 }
 
 function bingImageRequestSuccessHandler(response) {
+    //console.log(response.json())
     return response.json().then(function (json) {
-        app.$data.imageUrl = json.images[0].url
-        app.$data.picCopyRight = json.images[0].copyright
-        app.$data.picCopyRightLink = json.images[0].copyrightlink
+        console.log(json)
+        if (json.code == 200) {
+            app.$data.imageUrl = json.data.url;
+            app.$data.picCopyRight = json.data.copyright;
+            app.$data.picCopyRightLink = json.data.bing;
+        }
     })
 }
 
@@ -553,7 +575,9 @@ function heWeatherRequestSuccessHandler(response) {
 
 function daylyMottoRequestSuccessHandler(response) {
     return response.json().then(function (json) {
-        motto = json.hitokoto;
+        if (json.msg == "success") {
+            motto = json.data.content;
+        }
         //motto = json.data.content;
     })
 }
@@ -579,7 +603,10 @@ function updateGreetMsg() {
     }
 }
 
-function strIsnull(val) {
+function strIsEmpty(val) {
+    if (!val) {
+        return true;
+    }
     var str = val.replace(/(^\s*)|(\s*$)/g, '');//把val首尾的空格去掉。
     if (str == "" || str == undefined || str == null) {//输入框中输入空格也为空
         return true;
@@ -598,7 +625,7 @@ document.onkeydown = function (e) {
     else if (event.altKey && event.keyCode == 13) {
         setSearchHidden();
     }
-    else if ((!strIsnull(searchInput.value)) && (document.activeElement == searchInput)) {
+    else if ((!strIsEmpty(searchInput.value)) && (document.activeElement == searchInput)) {
         if (event.keyCode == 13) {
             let sl = "";
             let tl = "";
