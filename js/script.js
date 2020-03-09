@@ -540,7 +540,6 @@ function fetchData(url, successCallBack, errorCallBack) {
 function bingImageRequestSuccessHandler(response) {
     //console.log(response.json())
     return response.json().then(function (json) {
-        console.log(json)
         if (json.code == 200) {
             app.$data.imageUrl = json.data.url;
             app.$data.picCopyRight = json.data.copyright;
