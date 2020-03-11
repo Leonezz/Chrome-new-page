@@ -541,6 +541,7 @@ function bingImageRequestSuccessHandler(response) {
     //console.log(response.json())
     return response.json().then(function (json) {
         if (json.code == 200) {
+            let imgUrl = json.data.url + "!/both/" + screen.width + "x" + screen.height;
             app.$data.imageUrl = json.data.url;
             app.$data.picCopyRight = json.data.copyright;
             app.$data.picCopyRightLink = json.data.bing;
