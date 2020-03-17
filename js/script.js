@@ -354,7 +354,7 @@ var app = new Vue({
             var bookmarksNum = bookmarkObjs.length;
             var bookmarkWidth = addBookmarkButtonDom.offsetWidth
                 + 24;//add the padding
-            var isFull = false;
+            let isFull = false;
             if ((bookmarksNum + 2) * bookmarkWidth > 0.9 * screen.width) {
                 isFull = true;
             }
@@ -495,7 +495,7 @@ function readSettings(fn) {
 function saveBookmarks() {
     chrome.storage.sync.set({
         'bookmarks': bookmarkObjs
-        , 'isBookmarkFull': app.$data.isbookmarkfull
+        , 'isbookmarkfull': app.$data.isbookmarkfull
     }, function () {
     });
 }
@@ -511,8 +511,8 @@ function readBookmarks() {
                 createBookMark(element.title, element.url, element.imageUrl);
             });
         }
-        if (res.isBookmarkFull) {
-            app.$data.isbookmarkfull = res.isBookmarkFull;
+        if (res.isbookmarkfull) {
+            app.$data.isbookmarkfull = res.isbookmarkfull;
         }
     })
 }
