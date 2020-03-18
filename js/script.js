@@ -277,7 +277,6 @@ var app = new Vue({
         weatherText: "",
         temp: "20℃",
         weatherIconUrl: "",
-
         isbookmarkfull: false
     },
     methods: {
@@ -357,6 +356,7 @@ var app = new Vue({
             let isFull = false;
             if ((bookmarksNum + 2) * bookmarkWidth > 0.9 * screen.width) {
                 isFull = true;
+                screen.width * 0.9 / bookmarkWidth - 2
             }
             setTimeout(() => {
                 newBookmarkDialog("add-bookmark-dialog", addBookmarkButtonDom, "Add a bookmark:");
@@ -366,12 +366,12 @@ var app = new Vue({
                     var imageUrl = document.getElementById("icon-url-input").value;
                     document.getElementById("vm").removeChild(document.getElementById("add-bookmark-dialog"));
                     if (!strIsEmpty(bkTitle) && !strIsEmpty(bkUrl)) {
-                        imageUrl = recongnizeIconUrl(imageUrl, bkUrl);
-                        createBookMark(bkTitle, bkUrl, imageUrl);
-                        addBookmarkToArray(bkTitle, bkUrl);
                         if (isFull) {
                             app.$data.isbookmarkfull = true;
                         }
+                        imageUrl = recongnizeIconUrl(imageUrl, bkUrl);
+                        createBookMark(bkTitle, bkUrl, imageUrl);
+                        addBookmarkToArray(bkTitle, bkUrl);
                     }
                 })
             }, 10);
@@ -494,8 +494,7 @@ function readSettings(fn) {
  */
 function saveBookmarks() {
     chrome.storage.sync.set({
-        'bookmarks': bookmarkObjs
-        , 'isbookmarkfull': app.$data.isbookmarkfull
+        'bookmarks': bookmarkObjs, 'isbookmarkfull': app.$data.isbookmarkfull
     }, function () {
     });
 }
@@ -511,7 +510,9 @@ function readBookmarks() {
                 createBookMark(element.title, element.url, element.imageUrl);
             });
         }
-        if (res.isbookmarkfull) {
+    })
+    chrome.storage.sync.get('isbookmarkfull',function(res){
+        if(res){
             app.$data.isbookmarkfull = res.isbookmarkfull;
         }
     })
@@ -542,7 +543,7 @@ function bingImageRequestSuccessHandler(response) {
     return response.json().then(function (json) {
         if (json.code == 200) {
             let imgUrl = json.data.url + "!/both/" + screen.width + "x" + screen.height;
-            app.$data.imageUrl = json.data.url;
+            app.$data.imageUrl = imgUrl;
             app.$data.picCopyRight = json.data.copyright;
             app.$data.picCopyRightLink = json.data.bing;
         }
