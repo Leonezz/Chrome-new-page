@@ -219,6 +219,7 @@ function setSearchHidden() {
     document.getElementById("search-container").className = "search-div-fade-in search-div";
     document.getElementById("hello-div").className = "hello hello-div-center";
     document.getElementById("bookmark-container").style.opacity = 0;
+    document.getElementById("cover-div").className = "";
     fetchData(daylyMottoAPI, daylyMottoRequestSuccessHandler, function () { });
     setTimeout(() => {
         app.$data.helloMsg = motto;
@@ -232,6 +233,7 @@ function setSearchVisible() {
     }
     document.getElementById("search-container").className = "search-div";
     document.getElementById("hello-div").className = "hello hello-div-top";
+    document.getElementById("cover-div").className = "cover";
     document.getElementById("search-input").focus();
     document.getElementById("bookmark-container").style.opacity = 100;
     updateGreetMsg();//if very late stop show user name in greet words.

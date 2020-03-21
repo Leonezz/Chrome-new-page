@@ -10,10 +10,11 @@
     <link href="../css/stylesheet.css" rel="stylesheet" style="text/css" />
 </head>
 
-<body class="backGround">
-    <div id="app" class="backGround" class="div-relative">
-        <div id="vm" class="backGround" v-bind:style="{background: 'url('+imageUrl+')no-repeat 0px center'}"
+<body class="background">
+    <div id="app" class="background" class="div-relative">
+        <div id="vm" class="background" v-bind:style="{background: 'url('+imageUrl+')no-repeat 0px center'}"
             class="div-relative">
+            <div id="cover-div" class="cover"></div>
             <div id="setting-btn-div">
                 <button id="setting-btn" class="setting-btn" v-on:click="createSettingDiv"></button>
             </div>
