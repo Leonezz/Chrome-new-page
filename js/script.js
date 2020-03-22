@@ -16,6 +16,12 @@ var isSearchVisible = true;
  */
 var bookmarkObjs = [];
 
+/**
+ * add a bookmark obj to array bookmarkObjs.
+ * @param {bookmark title} title 
+ * @param {bookmark url} url 
+ * @param {bookmark icon url(optional)} imageUrl 
+ */
 function addBookmarkToArray(title, url, imageUrl) {
     var bk = {
         "id": "bookmark-" + url,//id should be unique
@@ -27,13 +33,23 @@ function addBookmarkToArray(title, url, imageUrl) {
     saveBookmarks();
 }
 
+
+/**
+ * delete bookmark from bookmarkObjs by its id.
+ * @param {bookmark id} _id 
+ */
 function delBookmarkFromArray(_id) {
     bookmarkObjs.splice(bookmarkObjs.findIndex(item => item.id === _id), 1);
     saveBookmarks();
-    //the bookmark container must not be full
+    //the bookmark container must not be full after one be deleted.
     app.$data.isbookmarkfull = false;
 }
 
+
+/**
+ * find and return a bookmaek obj by its id.
+ * @param {bookmark id} _id 
+ */
 function findBookmarkInArray(_id) {
     for (var i = 0; i < bookmarkObjs.length; ++i) {
         if (bookmarkObjs[i].id == _id) {
@@ -42,6 +58,11 @@ function findBookmarkInArray(_id) {
     }
 }
 
+/**
+ * replace an old bookmark by a new one.
+ * @param {old bookmark obj} objOld 
+ * @param {new bookmark obj} objNew 
+ */
 function changeBookmarkInArray(objOld, objNew) {
     for (var i = 0; i < bookmarkObjs.length; ++i) {
         if (objOld.id == bookmarkObjs[i].id) {
@@ -51,6 +72,12 @@ function changeBookmarkInArray(objOld, objNew) {
     saveBookmarks();
 }
 
+/**
+ * change an old bookmark dom to a new one.
+ * this code is stupid,I know it.
+ * @param {old bookmark id} oldId 
+ * @param {new bookmark obj} newBookmark 
+ */
 function changeBookmarkDom(oldId, newBookmark) {
     //document.getElementById(oldId).removeChild();
     document.getElementById(oldId).removeChild(document.getElementById(oldId + "-a"));
@@ -75,6 +102,8 @@ function changeBookmarkDom(oldId, newBookmark) {
 }
 
 /**
+ * get website icon url from given domain.
+ * this won't work,in almost all cases.
  * @param {*} url 
  */
 function getIconUrlFromStdUrl(url) {
@@ -88,7 +117,11 @@ function getIconUrlFromStdUrl(url) {
     return domain + "/favicon.ico";
 }
 
-
+/**
+ * prototype ,to count the length of a string takes on UI.
+ * this code takes an English code length as 1.
+ * a Chinese code length as 2.
+ */
 String.prototype.gblen = function () {
     var len = 0;
     for (var i = 0; i < this.length; i++) {
@@ -102,6 +135,10 @@ String.prototype.gblen = function () {
     return len;
 }
 
+/**
+ * prototype, to cut and return the left num of codes from given string.
+ * English code length is 1 and Chinese code length is 2.
+ */
 String.prototype.leftCodes = function (num) {
     var len = 0;
     for (var i = 0; i < this.length; i++) {
@@ -118,6 +155,15 @@ String.prototype.leftCodes = function (num) {
     return this;
 }
 
+
+/**
+ * create a bookmark dom from given args.
+ * this code is shit.
+ * I hate myself because of this.
+ * @param {bookmark titlr} title 
+ * @param {bookmark url} url 
+ * @param {bookmark icon url} imgUrl 
+ */
 function createBookMark(title, url, imgUrl) {
     var bkId = "bookmark-" + url;
     createEle(bkId, "bookmark-div", "bookmark-container", "div");
@@ -212,6 +258,10 @@ function createBookMark(title, url, imgUrl) {
     })
 }
 
+
+/**
+ * set search input and bookmarks hidden.
+ */
 function setSearchHidden() {
     if (!isSearchVisible) {
         return;
@@ -227,6 +277,10 @@ function setSearchHidden() {
     }, 500);
     isSearchVisible = false;
 }
+
+/**
+ * set search input and bookmarks visible.
+ */
 function setSearchVisible() {
     if (isSearchVisible) {
         return;
@@ -381,12 +435,19 @@ var app = new Vue({
     }
 })
 
+
 function recongnizeIconUrl(imgUrl, url) {
     imgUrl = imgUrl ? imgUrl : "";
     imgUrl = imgUrl == "" ? getIconUrlFromStdUrl(url) : imgUrl;
     return imgUrl;
 }
 
+/**
+ * shit code,I will rewrite this.
+ * @param {*} id 
+ * @param {*} duckDom 
+ * @param {*} title 
+ */
 function newBookmarkDialog(id, duckDom, title) {
     if (document.getElementById(id)) {
         return;
@@ -429,6 +490,14 @@ function newBookmarkDialog(id, duckDom, title) {
     }
 }
 
+
+/**
+ * 
+ * @param {dom to duck to} duckDom 
+ * @param {dialog dom id} dialogId 
+ * @param {offset of ver direction} topOffset 
+ * @param {*} leftOffset 
+ */
 function fixDialogPosition(duckDom, dialogId, topOffset, leftOffset) {
     var dia = document.getElementById(dialogId);
 
@@ -439,6 +508,10 @@ function fixDialogPosition(duckDom, dialogId, topOffset, leftOffset) {
     dia.style.left = dialeft + "px";
 }
 
+/**
+ * get dom margin left(absolute value).
+ * @param {dom} element 
+ */
 function getElementLeft(element) {
     var actualLeft = element.offsetLeft;
     var current = element.offsetParent;
@@ -451,6 +524,10 @@ function getElementLeft(element) {
     return actualLeft;
 }
 
+/**
+ * get dom margin top(absolute value).
+ * @param {dom} element 
+ */
 function getElementTop(element) {
     var actualTop = element.offsetTop;
     var current = element.offsetParent;
@@ -540,6 +617,10 @@ function fetchData(url, successCallBack, errorCallBack) {
         .catch(errorCallBack)
 }
 
+/**
+ * read and use response
+ * @param {url request reponse} response 
+ */
 function bingImageRequestSuccessHandler(response) {
     //console.log(response.json())
     return response.json().then(function (json) {
@@ -663,7 +744,7 @@ document.onkeydown = function (e) {
 window.onload = function () {
     //document.getElementById("search-input").addEventListener("blur", setSearchHidden);
     //document.getElementById("new-bookmark-btn").addEventListener("click", addBookmark);
-    this.setSearchHidden();
+    this.setSearchVisible();
 
     this.readSettings(function () {
         fetchData(heWeatherAPI, heWeatherRequestSuccessHandler, function () { });
