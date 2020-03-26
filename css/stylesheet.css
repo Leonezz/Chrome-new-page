@@ -24,7 +24,6 @@ html, body {
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, .3);
     transition-duration: 500ms;
     transition-timing-function: ease-in-out;
 }
@@ -41,7 +40,7 @@ html, body {
     transform: translate(-50%, 300px);
     background: url("https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/icon/search.png") no-repeat 3px center;
     opacity: 100;
-    transition-property: opacity;
+    
     transition-duration: 500ms;
     transition-timing-function: ease-in-out;
     transition-delay: 0s;
@@ -376,6 +375,8 @@ button:active {
     left: 50%;
     transform: translateX(100%);
     background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
     border: none;
     outline: none;
     display: flex;

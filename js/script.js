@@ -96,9 +96,9 @@ function changeBookmarkDom(oldId, newBookmark) {
 
     document.getElementById(newId + "-a").href = newUrl;
     document.getElementById(newId + "-a-div-div-2").innerHTML = newTitle;
-
     document.getElementById(newId + "-a-div-div-1").style.backgroundImage
         = "url(" + newBookmark.imageUrl + ")";
+    
 }
 
 /**
@@ -269,7 +269,7 @@ function setSearchHidden() {
     document.getElementById("search-container").className = "search-div-fade-in search-div";
     document.getElementById("hello-div").className = "hello hello-div-center";
     document.getElementById("bookmark-container").style.opacity = 0;
-    document.getElementById("cover-div").className = "";
+    document.getElementById("cover-div").style.backgroundColor = "rgba(0,0,0,0)";
     fetchData(daylyMottoAPI, daylyMottoRequestSuccessHandler, function () { });
     setTimeout(() => {
         app.$data.helloMsg = motto;
@@ -287,7 +287,7 @@ function setSearchVisible() {
     }
     document.getElementById("search-container").className = "search-div";
     document.getElementById("hello-div").className = "hello hello-div-top";
-    document.getElementById("cover-div").className = "cover";
+    document.getElementById("cover-div").style.backgroundColor = "rgba(0, 0, 0, .3)";
     document.getElementById("search-input").focus();
     document.getElementById("bookmark-container").style.opacity = 100;
     updateGreetMsg();//if very late stop show user name in greet words.
@@ -590,8 +590,8 @@ function readBookmarks() {
             });
         }
     })
-    chrome.storage.sync.get('isbookmarkfull',function(res){
-        if(res){
+    chrome.storage.sync.get('isbookmarkfull', function (res) {
+        if (res) {
             app.$data.isbookmarkfull = res.isbookmarkfull;
         }
     })
@@ -671,15 +671,15 @@ function updateGreetMsg() {
     let hour = date.getHours();
     if (hour > 4 && hour < 12) {//morning
         app.$data.showname = true;
-        greetMsg = "Good morning!";
+        greetMsg = "Good morning! ";
     }
     else if (hour > 11 && hour < 19) {//afternoon
         app.$data.showname = true;
-        greetMsg = "Good afternoon!";
+        greetMsg = "Good afternoon! ";
     }
     else if (hour > 18 && hour < 24) {//evening
         app.$data.showname = true;
-        greetMsg = "Good evening!";
+        greetMsg = "Good evening! ";
     }
     else {//very late
         app.$data.showname = false;
