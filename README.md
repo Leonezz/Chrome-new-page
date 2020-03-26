@@ -4,11 +4,11 @@
 
 ## A chrome extension to replace the new tab page.
 
-![logo](https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/icon/main-icon.png)
+![logo](https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/imgs/main-icon.png)
 
 ## Donate
 
-![donate](https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/icon/donate.png)
+![donate](https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/imgs/donate.png)
 
 ## Background
 
