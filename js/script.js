@@ -8,7 +8,7 @@
 //https://bing.biturl.top/?resolution=1920&format=json&index=0&mkt=zh-CN
 var greetMsg = "";
 var motto = "";
-var isSearchVisible = true;
+var isSearchVisible = false;
 
 /**
  * opreate array bookmarkObjs with menber functions only!
@@ -322,7 +322,7 @@ var heWeatherAPI = 'https://free-api.heweather.net/s6/weather/now?location=jiang
 var app = new Vue({
     el: '#app',
     data: {
-        imageUrl: "",
+        imageUrl: "../imgs/bck.jpg",
         helloMsg: greetMsg,
         name: "",
         location: "",

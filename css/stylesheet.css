@@ -40,7 +40,6 @@ html, body {
     transform: translate(-50%, 300px);
     background: url("https://raw.githubusercontent.com/Leonezz/privateHosting/master/chromenewtab/search.png") no-repeat 3px center;
     opacity: 100;
-    
     transition-duration: 500ms;
     transition-timing-function: ease-in-out;
     transition-delay: 0s;
@@ -171,11 +170,27 @@ input, button:active {
     padding: 0;
     bottom: 10px;
     left: 20px;
+    height: 30px;
+}
+
+.change-bck-btn {
+    height: 30px;
+    width: 30px;
+    float: left;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    margin-right: 10px;
+    border-radius: 100%;
+    outline-width: 0;
+    background-image: url("https://raw.githubusercontent.com/Leonezz/privateHosting/master/chromenewtab/biying.png");
+    background-position: center;
 }
 
 .copyright-text {
+    line-height: 30px;
     font-family: consolas;
     color: rgba(240, 248, 255, 0.6);
+    float: right;
 }
 
 .setting-btn {

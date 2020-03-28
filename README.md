@@ -4,7 +4,7 @@
 
 ## A chrome extension to replace the new tab page.
 
-![logo](https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/imgs/main-icon.png)
+![logo](https://raw.githubusercontent.com/Leonezz/Chrome-new-page/master/icon/main-icon.png)
 
 ## Donate
 
