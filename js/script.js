@@ -7,7 +7,7 @@
 //https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1
 //https://bing.biturl.top/?resolution=1920&format=json&index=0&mkt=zh-CN
 var greetMsg = "";
-var motto = "";
+var motto = "将愿望倾入不愿忘却的回忆...";
 var isSearchVisible = false;
 
 /**
@@ -98,7 +98,7 @@ function changeBookmarkDom(oldId, newBookmark) {
     document.getElementById(newId + "-a-div-div-2").innerHTML = newTitle;
     document.getElementById(newId + "-a-div-div-1").style.backgroundImage
         = "url(" + newBookmark.imageUrl + ")";
-    
+
 }
 
 /**
@@ -317,7 +317,7 @@ function createEle(childId, className, parentId, type) {
 }
 
 var daylyMottoAPI = 'https://v1.alapi.cn/api/shici';
-var bingImageAPI = 'http://v1.alapi.cn/api/bing?format=json';
+var bingImageAPI = 'https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1'//'http://v1.alapi.cn/api/bing?format=json';
 var heWeatherAPI = 'https://free-api.heweather.net/s6/weather/now?location=jiangning,nanjing&key=c2647375f06d4852a1f6883899e984b0';
 var app = new Vue({
     el: '#app',
@@ -624,11 +624,11 @@ function fetchData(url, successCallBack, errorCallBack) {
 function bingImageRequestSuccessHandler(response) {
     //console.log(response.json())
     return response.json().then(function (json) {
-        if (json.code == 200) {
-            let imgUrl = json.data.url + "!/both/" + screen.width + "x" + screen.height;
-            app.$data.imageUrl = imgUrl;
-            app.$data.picCopyRight = json.data.copyright;
-            app.$data.picCopyRightLink = json.data.bing;
+        if (response.status == 200) {
+            //let imgUrl = json.data.url + "!/both/" + screen.width + "x" + screen.height;
+            app.$data.imageUrl = "https://cn.bing.com" + json.images[0].url;
+            app.$data.picCopyRight = json.images[0].copyright;
+            app.$data.picCopyRightLink = json.images[0].copyrightlink;
         }
     })
 }
@@ -660,7 +660,7 @@ function heWeatherRequestSuccessHandler(response) {
 function daylyMottoRequestSuccessHandler(response) {
     return response.json().then(function (json) {
         if (json.msg == "success") {
-            motto = json.data.content;
+            //motto = json.data.content;
         }
         //motto = json.data.content;
     })
@@ -755,6 +755,14 @@ window.onload = function () {
     readBookmarks();
 }
 
+
+var imageIndex = 0;
+function changeBackgroundImage() {
+    let api = 'https://cn.bing.com/HPImageArchive.aspx?format=js&idx=' + (++imageIndex) % 8 + '&n=1';
+    fetchData(api, bingImageRequestSuccessHandler, function () { });
+}
+
+document.getElementById("bck-change-btn").addEventListener('click', changeBackgroundImage);
 
 /**
  * when blank place be clicked,

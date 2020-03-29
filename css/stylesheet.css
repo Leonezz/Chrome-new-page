@@ -38,7 +38,7 @@ html, body {
     top: 0px;
     left: 50%;
     transform: translate(-50%, 300px);
-    background: url("https://raw.githubusercontent.com/Leonezz/privateHosting/master/chromenewtab/search.png") no-repeat 3px center;
+    background: url("../icon/search.png") no-repeat 3px center;
     opacity: 100;
     transition-duration: 500ms;
     transition-timing-function: ease-in-out;
@@ -143,7 +143,7 @@ input, button:active {
     bottom: 0;
     height: 35px;
     width: 35px;
-    background: url("https://raw.githubusercontent.com/Leonezz/privateHosting/master/chromenewtab/location.png") no-repeat center;
+    background: url("../icon/location.png") no-repeat center;
     float: right;
     margin-left: auto;
 }
@@ -182,7 +182,7 @@ input, button:active {
     margin-right: 10px;
     border-radius: 100%;
     outline-width: 0;
-    background-image: url("https://raw.githubusercontent.com/Leonezz/privateHosting/master/chromenewtab/biying.png");
+    background-image: url("../icon/biying.png");
     background-position: center;
 }
 
@@ -194,7 +194,7 @@ input, button:active {
 }
 
 .setting-btn {
-    background: url("https://raw.githubusercontent.com/Leonezz/privateHosting/master/chromenewtab/setting.png");
+    background: url("../icon/setting.png");
     position: absolute;
     margin: 0;
     padding: 0;
@@ -263,7 +263,7 @@ button:active {
     float: right;
     top: 0;
     border: 0px;
-    background: url("https://raw.githubusercontent.com/Leonezz/privateHosting/master/chromenewtab/close.png");
+    background: url("../icon/close.png");
 }
 
 .setting-form-div {
@@ -342,7 +342,7 @@ button:active {
     top: 50%;
     transform: translate(30px, 15px);
     vertical-align: center;
-    background: url("https://raw.githubusercontent.com/Leonezz/privateHosting/master/chromenewtab/add.png")no-repeat 0px center;
+    background: url("../icon/add.png")no-repeat 0px center;
 }
 
 .bookmark-action-btn {
@@ -363,7 +363,7 @@ button:active {
     width: 24px;
     height: 24px;
     padding-right: 2px;
-    background: url("https://raw.githubusercontent.com/Leonezz/privateHosting/master/chromenewtab/more.png")no-repeat center;
+    background: url("../icon/more.png")no-repeat center;
 }
 
 .bookmark-main-div {
