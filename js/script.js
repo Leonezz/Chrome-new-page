@@ -7,7 +7,7 @@
 //https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1
 //https://bing.biturl.top/?resolution=1920&format=json&index=0&mkt=zh-CN
 var greetMsg = "";
-var motto = "将愿望倾入不愿忘却的回忆...";
+var motto = "";
 var isSearchVisible = false;
 
 /**
@@ -660,7 +660,7 @@ function heWeatherRequestSuccessHandler(response) {
 function daylyMottoRequestSuccessHandler(response) {
     return response.json().then(function (json) {
         if (json.msg == "success") {
-            //motto = json.data.content;
+            motto = json.data.content;
         }
         //motto = json.data.content;
     })
