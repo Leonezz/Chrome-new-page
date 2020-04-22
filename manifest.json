@@ -4,7 +4,7 @@
     "manifest_version": 2,
     "description": "A simple new tab page extension.",
     "chrome_url_overrides": {
-        "newtab": "/html/newTab.html"
+        "newtab": "/html/index.html"
     },
     "author": "zhuwenq",
     "browser_action": {

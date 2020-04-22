@@ -653,7 +653,7 @@ function heWeatherRequestSuccessHandler(response) {
         if (!(hour > 4 && hour < 19)) {
             night = "n";
         }
-        app.$data.weatherIconUrl = "https://raw.githubusercontent.com/Leonezz/privateHosting/master/chromenewtab/png/" + json.HeWeather6[0].now.cond_code + night + ".png";
+        app.$data.weatherIconUrl = "../icon/png/" + json.HeWeather6[0].now.cond_code + night + ".png";
     });
 }
 
