@@ -35,9 +35,9 @@ html, body {
     position: absolute;
     min-height: 44px;
     width: 70%;
-    top: 0px;
+    top: 30%;
     left: 50%;
-    transform: translate(-50%, 300px);
+    transform: translate(-50%, 0px);
     background: url("../icon/search.png") no-repeat 3px center;
     opacity: 100;
     transition-duration: 500ms;
@@ -76,8 +76,6 @@ input:focus::placeholder {
 input, button:active {
     border-color: #66afe9;
     outline: 0;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
-    /*for webkti browser*/
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .1), 0 0 8px rgba(102, 175, 233, .6)
 }
 
@@ -88,7 +86,9 @@ input, button:active {
     text-align: center;
     color: rgba(245, 245, 220, 0.8);
     z-index: 2;
-    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
     transition-duration: 500ms;
     transition-timing-function: ease-in-out;
     transition-delay: 0ms;
@@ -101,10 +101,9 @@ input, button:active {
 }
 
 .hello-div-center {
-    padding-left: 15%;
-    padding-right: 15%;
+    
     top: 50%;
-    transform: translateY(-50%);
+    transform: translate(-50%,-50%);
     font-size: 62px;
 }
 
